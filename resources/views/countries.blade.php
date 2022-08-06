@@ -39,7 +39,11 @@
             alert('New Country Has been Saved Successfully');
         });
 
-        
+           window.addEventListener('OpenEditCountryModal', function(event){
+               $('.editCountry').find('span').html('');
+               $('.editCountry').modal('show');
+           });
+
     </script>
 
 </body>

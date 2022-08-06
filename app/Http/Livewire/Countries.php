@@ -48,4 +48,9 @@ class Countries extends Component
     {
         $this->dispatchBrowserEvent('CloseAddCountryModal');
     }
+    
+    public function OpenEditCountryModal($id)
+    {
+        $this->dispatchBrowserEvent('OpenEditCountryModal',\compact('id'));
+    }
 }

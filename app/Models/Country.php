@@ -13,7 +13,7 @@ class Country extends Model
        'continent_id','country_name','capital_city'
     ];
     public function continent(){
-        return $this->belongsTo(Continent::class,'continent_id','id');
+        return $this->belongsTo(Continent::class,'continent_id');
     }
 
     
