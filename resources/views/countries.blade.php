@@ -36,7 +36,6 @@
             $('.addCountry').find('span').html('');
             $('.addCountry').find('form')[0].reset();
             $('.addCountry').modal('hide');
-            alert('New Country Has been Saved Successfully');
         });
 
             window.addEventListener('OpenEditCountryModal', function(event){
@@ -75,6 +74,7 @@
            });
 
            window.addEventListener('swal:deleteCountries', function(event){
+
                swal.fire({
                    title:event.detail.title,
                    html:event.detail.html,

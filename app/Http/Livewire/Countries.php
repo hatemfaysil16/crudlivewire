@@ -5,12 +5,20 @@ namespace App\Http\Livewire;
 use App\Models\Continent;
 use App\Models\Country;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Countries extends Component
 {
+    use WithPagination;
     public $continent,$country_name,$capital_city;
     public $upd_continent,$upd_country_name,$upd_capital_city,$cid;
     protected $listeners = ['delete','deleteCheckedCountries'];
+    public $checkedCountry = [];
+    public $byContinent = null;
+    public $perPage = 5;
+    public $orderBy = 'country_name';
+    public $sortBy = 'asc';
+    public $search;
     public function render()
     {
         return view('livewire.countries',[
@@ -98,6 +106,20 @@ class Countries extends Component
         }
         $this->checkedCountry = [];
     }
-    
+
+    public function deleteCountries(){
+        $this->dispatchBrowserEvent('swal:deleteCountries',[
+            'title'=>'Are you sure?',
+            'html'=>'You want to delete this countries',
+            'checkedIDs'=>$this->checkedCountry,
+        ]);
+    }
+    public function deleteCheckedCountries($ids){
+        Country::whereKey($ids)->delete();
+        $this->checkedCountry = [];
+    }
+    public function isChecked($countryId){
+        return in_array($countryId, $this->checkedCountry) ? 'bg-info text-white' : '';
+    }
 
 }
