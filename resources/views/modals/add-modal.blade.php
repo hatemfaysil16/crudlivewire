@@ -16,7 +16,6 @@
                                @foreach ($continents as $continent)
                                    <option value="{{ $continent->id }}">{{ $continent->continent_name }}</option>
                                @endforeach
-                               
                          </select>
                          <span class="text-danger"> @error('continent') {{ $message }}@enderror</span>
                      </div>

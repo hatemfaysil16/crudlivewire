@@ -9,6 +9,8 @@ use Livewire\Component;
 class Countries extends Component
 {
     public $continent,$country_name,$capital_city;
+    public $upd_continent,$upd_country_name,$upd_capital_city,$cid;
+    protected $listeners = ['delete','deleteCheckedCountries'];
     public function render()
     {
         return view('livewire.countries',[
@@ -32,7 +34,6 @@ class Countries extends Component
 
         if($save){
             $this->dispatchBrowserEvent('CloseAddCountryModal');
-            // $this->checkedCountry = [];
         }
     }
 
@@ -49,8 +50,54 @@ class Countries extends Component
         $this->dispatchBrowserEvent('CloseAddCountryModal');
     }
     
-    public function OpenEditCountryModal($id)
-    {
-        $this->dispatchBrowserEvent('OpenEditCountryModal',\compact('id'));
+    public function OpenEditCountryModal($id){
+        $info = Country::find($id);
+        $this->upd_continent = $info->continent_id;
+        $this->upd_country_name = $info->country_name;
+        $this->upd_capital_city = $info->capital_city;
+        $this->cid = $info->id;
+        $this->dispatchBrowserEvent('OpenEditCountryModal',[
+            'id'=>$id
+        ]);
     }
+
+    public function update(){
+        $cid = $this->cid;
+        $this->validate([
+              'upd_continent'=>'required',
+              'upd_country_name'=>'required|unique:countries,country_name,'.$cid,
+              'upd_capital_city'=>'required'
+        ],[
+            'upd_continent.required'=>'You must select continent',
+            'upd_country_name.required'=>'Enter country name',
+            'upd_country_name.unique'=>'Country name Already Exists',
+            'upd_capital_city.required'=>'Capital city require'
+        ]);
+        $update = Country::find($cid)->update([
+            'continent_id'=>$this->upd_continent,
+            'country_name'=>$this->upd_country_name,
+            'capital_city'=>$this->upd_capital_city
+        ]);
+        if($update){
+            $this->dispatchBrowserEvent('CloseEditCountryModal');
+            $this->checkedCountry = [];
+        }
+    }
+    public function deleteConfirm($id){
+        $info = Country::find($id);
+        $this->dispatchBrowserEvent('SwalConfirm',[
+            'title'=>'Are you sure?',
+            'html'=>'You want to delete <strong>'.$info->country_name.'</strong>',
+            'id'=>$id
+        ]);
+    }
+    public function delete($id){
+        $del =  Country::find($id)->delete();
+        if($del){
+            $this->dispatchBrowserEvent('deleted');
+        }
+        $this->checkedCountry = [];
+    }
+    
+
 }

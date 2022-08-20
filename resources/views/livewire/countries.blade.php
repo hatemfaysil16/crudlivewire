@@ -25,7 +25,7 @@
                     <td>{{ $country->capital_city }}</td>
                     <td>
                         <div class="btn-group">
-                            <button class="btn btn-danger btn-sm">Delete</button>
+                            <button class="btn btn-danger btn-sm" wire:click="deleteConfirm({{$country->id}})">Delete</button>
                             <button class="btn btn-success btn-sm" wire:click="OpenEditCountryModal({{ $country->id }})">Edit</button>
                         </div>
                     </td>
