@@ -18,7 +18,6 @@ class Countries extends Component
     public $perPage = 5;
     public $orderBy = 'country_name';
     public $sortBy = 'asc';
-    asdsad
     public $search;
     public function render()
     {
