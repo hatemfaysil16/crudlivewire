@@ -20,7 +20,7 @@ class Country extends Model
         $term = "%$term%";
         $query->where(function($query) use ($term){
             $query->where('country_name','like',$term)
-            ->orwhere('capital_city','like',$term);
+            ->orWhere('capital_city','like',$term);
         });
     }
 
