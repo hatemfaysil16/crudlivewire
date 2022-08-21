@@ -23,7 +23,13 @@ class Countries extends Component
     {
         return view('livewire.countries',[
             'continents'=>Continent::orderBy('continent_name','asc')->get(),
-            'countries'=>Country::orderBy('country_name','asc')->paginate(5)
+            // 'countries'=>Country::orderBy('country_name','asc')->paginate(5)
+            'countries'=>Country::when($this->byContinent,function($query){
+                $query->where('continent_id',$this->byContinent);
+            })
+            ->Search(\trim($this->search))
+            ->orderBy($this->orderBy,$this->sortBy)
+            ->paginate($this->perPage)
         ]);
     }
 

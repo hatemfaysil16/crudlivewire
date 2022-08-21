@@ -16,5 +16,13 @@ class Country extends Model
         return $this->belongsTo(Continent::class,'continent_id');
     }
 
+    public function scopeSearch($query , $term){
+        $term = "%$term%";
+        $query->where(function($query) use ($term){
+            $query->where('country_name','like',$term)
+            ->orwhere('capital_city','like',$term);
+        });
+    }
+
     
 }
